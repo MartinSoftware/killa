@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -19,6 +21,12 @@ android {
         versionName = "0.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // URL base de la API leída de gradle.properties (versionado).
+        // Override: ./gradlew assembleDebug -Pkilla.api.baseUrl=http://otra-ip:8080/
+        val baseUrl = (project.findProperty("killa.api.baseUrl") as String?)
+            ?: "http://10.0.2.2:8080/"
+        buildConfigField("String", "API_BASE_URL", "\"$baseUrl\"")
     }
 
     buildTypes {
@@ -30,15 +38,22 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
+
     buildFeatures {
         compose = true
+        buildConfig = true
+    }
+}
+
+// Fuera del bloque android { }: es extensión del proyecto Kotlin, no del Android plugin
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
     }
 }
 
@@ -77,4 +92,7 @@ dependencies {
 
     // DataStore
     implementation(libs.androidx.datastore.preferences)
+
+    testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
 }
