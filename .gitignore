@@ -1,0 +1,53 @@
+# ============================================================
+# Killa — .gitignore raíz del monorepo
+# Cubre Android + Backend (Ktor) + IDEs + SO + secretos
+# ============================================================
+
+# ===== Android =====
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/captures/
+android/.externalNativeBuild/
+android/.cxx/
+android/*.iml
+android/*.apk
+android/*.aab
+android/*.keystore
+android/keystore.properties
+!android/debug.keystore
+
+# ===== Backend (Ktor/Gradle) =====
+backend/.gradle/
+backend/build/
+backend/out/
+backend/*.log
+
+# ===== IntelliJ / Android Studio =====
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# ===== Sistema operativo =====
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~
+
+# ===== Secretos (REGLA DE ORO: nunca al repo) =====
+.env
+.env.*
+!.env.example
+secrets/
+*.pem
+*.p12
+*.jks
+
+# ===== Logs y temporales =====
+*.log
+logs/
+tmp/
