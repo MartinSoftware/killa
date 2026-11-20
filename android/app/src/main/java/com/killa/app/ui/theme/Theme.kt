@@ -1,58 +1,91 @@
 package com.killa.app.ui.theme
 
 import android.app.Activity
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+// ============================================================
+// Esquemas de color Killa (light/dark).
+// Mapeo directo de la paleta en Color.kt a Material 3.
+// ============================================================
+
+private val KillaLightColorScheme = lightColorScheme(
+    primary = KillaPrimaryLight,
+    onPrimary = Color.White,
+    primaryContainer = KillaPrimarySoftLight,
+    onPrimaryContainer = KillaPrimaryLight,
+
+    secondary = KillaSecondaryLight,
+    onSecondary = Color.White,
+    secondaryContainer = KillaSecondarySoftLight,
+    onSecondaryContainer = KillaSecondaryLight,
+
+    error = KillaErrorLight,
+    onError = Color.White,
+    errorContainer = KillaErrorSoftLight,
+    onErrorContainer = KillaErrorLight,
+
+    background = KillaBgLight,
+    onBackground = KillaTextLight,
+    surface = KillaSurfaceLight,
+    onSurface = KillaTextLight,
+    surfaceVariant = KillaSurfaceAltLight,
+    onSurfaceVariant = KillaTextSecondaryLight,
+    outline = KillaBorderLight
 )
 
-private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
+private val KillaDarkColorScheme = darkColorScheme(
+    primary = KillaPrimaryLightDarkMode,
     onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    primaryContainer = KillaPrimarySoftDark,
+    onPrimaryContainer = KillaPrimaryLightDarkMode,
+
+    secondary = KillaSecondaryDark,
+    onSecondary = Color.Black,
+    secondaryContainer = KillaSecondarySoftDark,
+    onSecondaryContainer = KillaSecondaryDark,
+
+    error = KillaErrorDark,
+    onError = Color.Black,
+    errorContainer = KillaErrorSoftDark,
+    onErrorContainer = KillaErrorDark,
+
+    background = KillaBgDark,
+    onBackground = KillaTextDark,
+    surface = KillaSurfaceDark,
+    onSurface = KillaTextDark,
+    surfaceVariant = KillaSurfaceAltDark,
+    onSurfaceVariant = KillaTextSecondaryDark,
+    outline = KillaBorderDark
 )
 
 @Composable
 fun KillaTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
+    val colorScheme = if (darkTheme) KillaDarkColorScheme else KillaLightColorScheme
 
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+    val view = LocalView.current
+    if (!view.isInEditMode) {
+        SideEffect {
+            val window = (view.context as Activity).window
+            window.statusBarColor = colorScheme.background.toArgb()
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
+        }
     }
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = KillaTypography,
         content = content
     )
 }
