@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Killa — Mockups</title>
+<style>
+:root {
+  --killa-primary: #6B4EFF;
+  --killa-primary-dark: #5538E0;
+  --killa-primary-soft: #EDE9FF;
+  --killa-secondary: #00C896;
+  --killa-secondary-soft: #E0FBF2;
+  --killa-error: #E53935;
+  --killa-error-soft: #FDE8E8;
+  --killa-warning: #FFB300;
+  --killa-warning-soft: #FFF6E0;
+
+  --killa-bg: #F7F7FB;
+  --killa-surface: #FFFFFF;
+  --killa-surface-alt: #F0F0F5;
+  --killa-border: #E5E5EC;
+
+  --killa-text: #1A1A1A;
+  --killa-text-secondary: #6B6B6B;
+  --killa-text-tertiary: #9A9AA5;
+
+  --killa-radius-sm: 10px;
+  --killa-radius-md: 16px;
+  --killa-radius-lg: 24px;
+  --killa-radius-pill: 999px;
+
+  --killa-space-xs: 4px;
+  --killa-space-sm: 8px;
+  --killa-space-md: 16px;
+  --killa-space-lg: 24px;
+  --killa-space-xl: 32px;
+
+  --killa-shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+  --killa-shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+  --killa-shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
+
+  --killa-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+[data-theme="dark"] {
+  --killa-primary: #9B85FF;
+  --killa-primary-dark: #7A63E8;
+  --killa-primary-soft: #2A2350;
+  --killa-secondary: #3DDBAE;
+  --killa-secondary-soft: #103A2E;
+  --killa-error: #FF6B68;
+  --killa-error-soft: #3A1A1A;
+
+  --killa-bg: #0F0F14;
+  --killa-surface: #1A1A22;
+  --killa-surface-alt: #22222C;
+  --killa-border: #2E2E3A;
+
+  --killa-text: #F5F5F5;
+  --killa-text-secondary: #A0A0A0;
+  --killa-text-tertiary: #6B6B75;
+
+  --killa-shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+  --killa-shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+  --killa-shadow-lg: 0 8px 24px rgba(0,0,0,0.5);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--killa-font);
+  background: #E8E8EE;
+  color: var(--killa-text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px;
+  transition: background 0.2s;
+}
+[data-theme="dark"] body { background: #050508; }
+
+.controls {
+  display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+  justify-content: center; margin-bottom: 24px;
+  background: var(--killa-surface); padding: 12px 20px;
+  border-radius: var(--killa-radius-pill); box-shadow: var(--killa-shadow-md);
+  transition: background 0.2s;
+}
+.controls label { font-size: 13px; color: var(--killa-text-secondary); font-weight: 500; }
+.controls select, .controls button {
+  font-family: var(--killa-font); font-size: 13px; padding: 8px 14px;
+  border-radius: var(--killa-radius-pill); border: 1px solid var(--killa-border);
+  background: var(--killa-surface); color: var(--killa-text); cursor: pointer;
+  transition: all 0.15s;
+}
+.controls select:hover, .controls button:hover { border-color: var(--killa-primary); }
+
+.phone {
+  width: 390px; height: 844px;
+  background: var(--killa-bg); border-radius: 48px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25), 0 0 0 10px var(--killa-surface);
+  overflow: hidden; position: relative;
+  display: flex; flex-direction: column; transition: background 0.2s;
+}
+.phone::before {
+  content: ''; position: absolute; top: 12px; left: 50%;
+  transform: translateX(-50%); width: 120px; height: 32px;
+  background: var(--killa-surface); border-radius: var(--killa-radius-pill); z-index: 100;
+}
+.status-bar {
+  height: 54px; padding: 18px 24px 0;
+  display: flex; justify-content: space-between;
+  font-size: 13px; font-weight: 600; color: var(--killa-text); flex-shrink: 0;
+}
+.screen {
+  flex: 1; overflow-y: auto; padding: 0 24px 24px;
+  display: none; flex-direction: column; animation: fadeIn 0.2s ease;
+}
+.screen.active { display: flex; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.killa-logo { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.killa-logo-mark {
+  width: 72px; height: 72px; background: var(--killa-primary);
+  border-radius: var(--killa-radius-md);
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 34px; font-weight: 700; box-shadow: var(--killa-shadow-md);
+}
+.killa-logo-mark.small { width: 48px; height: 48px; font-size: 22px; border-radius: var(--killa-radius-sm); }
+.killa-logo-mark.tiny { width: 36px; height: 36px; font-size: 16px; border-radius: var(--killa-radius-sm); }
+.killa-logo-text { font-size: 28px; font-weight: 700; color: var(--killa-text); letter-spacing: -0.5px; }
+.killa-logo-tagline {
+  font-size: 11px; font-weight: 500; color: var(--killa-text-secondary);
+  text-transform: uppercase; letter-spacing: 2px;
+}
+
+.btn {
+  font-family: var(--killa-font); font-size: 15px; font-weight: 600;
+  padding: 16px 24px; border-radius: var(--killa-radius-md);
+  border: none; cursor: pointer; width: 100%;
+  transition: all 0.15s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn-primary { background: var(--killa-primary); color: white; }
+.btn-primary:hover { background: var(--killa-primary-dark); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-secondary { background: var(--killa-surface-alt); color: var(--killa-text); }
+.btn-ghost { background: transparent; color: var(--killa-primary); }
+.btn-danger { background: var(--killa-error-soft); color: var(--killa-error); }
+.btn-sm { padding: 10px 16px; font-size: 13px; }
+
+.field { margin-bottom: 16px; }
+.field label {
+  display: block; font-size: 13px; font-weight: 600;
+  color: var(--killa-text-secondary); margin-bottom: 6px;
+}
+.field input {
+  font-family: var(--killa-font); width: 100%; padding: 14px 16px;
+  font-size: 15px; border-radius: var(--killa-radius-md);
+  border: 1.5px solid var(--killa-border);
+  background: var(--killa-surface); color: var(--killa-text);
+  transition: border-color 0.15s;
+}
+.field input:focus { outline: none; border-color: var(--killa-primary); }
+
+.card {
+  background: var(--killa-surface); border-radius: var(--killa-radius-lg);
+  padding: 20px; box-shadow: var(--killa-shadow-sm); transition: background 0.2s;
+}
+
+.splash-screen { justify-content: center; align-items: center; text-align: center; background: var(--killa-bg); }
+.splash-screen .killa-logo { margin-bottom: 32px; }
+.spinner {
+  width: 28px; height: 28px; border: 3px solid var(--killa-primary-soft);
+  border-top-color: var(--killa-primary); border-radius: 50%;
+  animation: spin 0.8s linear infinite; margin: 0 auto;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.splash-footer {
+  position: absolute; bottom: 40px; left: 0; right: 0;
+  text-align: center; font-size: 11px; color: var(--killa-text-tertiary);
+}
+
+.login-screen { padding-top: 24px; }
+.login-header { text-align: center; margin-bottom: 32px; }
+.login-header .killa-logo { margin-bottom: 16px; }
+.login-header h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+.login-header p { font-size: 14px; color: var(--killa-text-secondary); }
+.pin-input { display: flex; gap: 8px; justify-content: center; margin-bottom: 16px; }
+.pin-input input {
+  width: 52px; height: 56px; text-align: center;
+  font-size: 22px; font-weight: 700; border-radius: var(--killa-radius-sm);
+  border: 1.5px solid var(--killa-border);
+  background: var(--killa-surface); color: var(--killa-text);
+}
+.pin-input input:focus {
+  outline: none; border-color: var(--killa-primary);
+  box-shadow: 0 0 0 3px var(--killa-primary-soft);
+}
+.login-footer { text-align: center; margin-top: 24px; font-size: 14px; color: var(--killa-text-secondary); }
+.login-footer a { color: var(--killa-primary); font-weight: 600; text-decoration: none; cursor: pointer; }
+
+.home-screen { padding-top: 16px; }
+.home-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+.home-header .killa-logo { flex-direction: row; gap: 10px; align-items: center; }
+.home-header .killa-logo-text { font-size: 20px; }
+.home-header .killa-logo-tagline { font-size: 9px; letter-spacing: 1.5px; }
+.avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--killa-primary-soft); color: var(--killa-primary);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 15px;
+}
+.balance-card {
+  background: linear-gradient(135deg, var(--killa-primary) 0%, var(--killa-primary-dark) 100%);
+  border-radius: var(--killa-radius-lg); padding: 24px; color: white;
+  margin-bottom: 24px; box-shadow: var(--killa-shadow-lg);
+  position: relative; overflow: hidden;
+}
+.balance-card::after {
+  content: ''; position: absolute; top: -40px; right: -40px;
+  width: 160px; height: 160px; background: rgba(255,255,255,0.1); border-radius: 50%;
+}
+.balance-card .label { font-size: 13px; opacity: 0.85; margin-bottom: 8px; }
+.balance-card .amount { font-size: 36px; font-weight: 700; letter-spacing: -1px; margin-bottom: 4px; }
+.balance-card .account { font-size: 13px; opacity: 0.85; }
+.section-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; color: var(--killa-text); }
+.quick-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
+.action-card {
+  background: var(--killa-surface); border-radius: var(--killa-radius-md);
+  padding: 16px 8px; display: flex; flex-direction: column; align-items: center; gap: 8px;
+  cursor: pointer; box-shadow: var(--killa-shadow-sm);
+  transition: transform 0.15s; border: 1px solid var(--killa-border);
+}
+.action-card:hover { transform: translateY(-2px); border-color: var(--killa-primary); }
+.action-icon {
+  width: 44px; height: 44px; background: var(--killa-primary-soft);
+  color: var(--killa-primary); border-radius: var(--killa-radius-sm);
+  display: flex; align-items: center; justify-content: center; font-size: 20px;
+}
+.action-label { font-size: 12px; font-weight: 600; color: var(--killa-text); }
+.movement-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 0; border-bottom: 1px solid var(--killa-border);
+}
+.movement-item:last-child { border-bottom: none; }
+.movement-icon {
+  width: 40px; height: 40px; border-radius: var(--killa-radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+.movement-icon.in { background: var(--killa-secondary-soft); color: var(--killa-secondary); }
+.movement-icon.out { background: var(--killa-error-soft); color: var(--killa-error); }
+.movement-info { flex: 1; }
+.movement-info .title { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+.movement-info .date { font-size: 12px; color: var(--killa-text-secondary); }
+.movement-amount { font-size: 14px; font-weight: 700; text-align: right; }
+.movement-amount.in { color: var(--killa-secondary); }
+.movement-amount.out { color: var(--killa-text); }
+
+.screen-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.back-btn {
+  width: 40px; height: 40px; border-radius: var(--killa-radius-sm);
+  background: var(--killa-surface); border: 1px solid var(--killa-border);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 18px; color: var(--killa-text);
+}
+.back-btn:hover { border-color: var(--killa-primary); }
+.screen-header h1 { font-size: 20px; font-weight: 700; }
+
+.historial-screen { padding-top: 16px; }
+.filter-chips { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 4px; }
+.chip {
+  padding: 8px 16px; border-radius: var(--killa-radius-pill);
+  border: 1px solid var(--killa-border); background: var(--killa-surface);
+  font-size: 13px; font-weight: 600; color: var(--killa-text-secondary);
+  cursor: pointer; white-space: nowrap; transition: all 0.15s;
+}
+.chip.active { background: var(--killa-primary); color: white; border-color: var(--killa-primary); }
+.date-group { margin-bottom: 20px; }
+.date-group-title {
+  font-size: 12px; font-weight: 700; color: var(--killa-text-secondary);
+  text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; padding-left: 4px;
+}
+.date-group .card { padding: 0 16px; }
+
+.perfil-screen { padding-top: 16px; }
+.perfil-header {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 24px 0; margin-bottom: 24px;
+}
+.perfil-avatar {
+  width: 96px; height: 96px; border-radius: 50%;
+  background: var(--killa-primary); color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36px; font-weight: 700; margin-bottom: 16px;
+  box-shadow: var(--killa-shadow-md);
+}
+.perfil-name { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+.perfil-email { font-size: 14px; color: var(--killa-text-secondary); }
+.perfil-data { margin-bottom: 24px; }
+.perfil-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 0; border-bottom: 1px solid var(--killa-border);
+}
+.perfil-row:last-child { border-bottom: none; }
+.perfil-row .label { font-size: 13px; color: var(--killa-text-secondary); }
+.perfil-row .value { font-size: 14px; font-weight: 600; color: var(--killa-text); }
+
+/* Transferir */
+.transferir-screen { padding-top: 16px; }
+.step-indicator {
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; margin-bottom: 24px;
+}
+.step-dot {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--killa-surface-alt); color: var(--killa-text-tertiary);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+}
+.step-dot.active { background: var(--killa-primary); color: white; }
+.step-dot.done { background: var(--killa-secondary); color: white; }
+.step-line { width: 40px; height: 2px; background: var(--killa-border); }
+.step-line.done { background: var(--killa-secondary); }
+
+.transfer-step { display: none; }
+.transfer-step.active { display: block; }
+
+.tipo-option {
+  background: var(--killa-surface);
+  border: 1.5px solid var(--killa-border);
+  border-radius: var(--killa-radius-md);
+  padding: 20px;
+  display: flex; align-items: center; gap: 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-bottom: 12px;
+}
+.tipo-option:hover { border-color: var(--killa-primary); transform: translateY(-2px); }
+.tipo-option-icon {
+  width: 56px; height: 56px; border-radius: var(--killa-radius-md);
+  background: var(--killa-primary-soft); color: var(--killa-primary);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; font-weight: 700; flex-shrink: 0;
+}
+.tipo-option-info { flex: 1; }
+.tipo-option-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.tipo-option-desc { font-size: 13px; color: var(--killa-text-secondary); }
+.tipo-option-arrow { font-size: 20px; color: var(--killa-text-tertiary); }
+
+.banco-option {
+  background: var(--killa-surface);
+  border: 1.5px solid var(--killa-border);
+  border-radius: var(--killa-radius-md);
+  padding: 16px;
+  display: flex; align-items: center; gap: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-bottom: 12px;
+}
+.banco-option:hover:not(.disabled) { border-color: var(--killa-primary); transform: translateY(-2px); }
+.banco-option.disabled { opacity: 0.5; cursor: not-allowed; }
+.banco-icon {
+  width: 44px; height: 44px; border-radius: var(--killa-radius-sm);
+  background: var(--killa-primary-soft); color: var(--killa-primary);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 700; flex-shrink: 0;
+}
+.banco-icon.dinobit { background: #FFB300; color: #1A1A1A; }
+.banco-info { flex: 1; }
+.banco-name { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+.banco-desc { font-size: 12px; color: var(--killa-text-secondary); }
+.banco-badge {
+  font-size: 10px; font-weight: 700; padding: 4px 8px;
+  border-radius: var(--killa-radius-pill);
+  background: var(--killa-warning-soft); color: var(--killa-warning);
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+.banco-arrow { font-size: 20px; color: var(--killa-text-tertiary); }
+
+.summary-card {
+  background: var(--killa-surface-alt); border-radius: var(--killa-radius-md);
+  padding: 16px; margin-bottom: 20px;
+}
+.summary-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; }
+.summary-row .label { color: var(--killa-text-secondary); }
+.summary-row .value { font-weight: 700; }
+.summary-row.total { border-top: 1px solid var(--killa-border); margin-top: 8px; padding-top: 12px; font-size: 16px; }
+.summary-row.total .value { color: var(--killa-primary); font-size: 18px; }
+
+.token-box {
+  background: var(--killa-warning-soft); border: 1.5px dashed var(--killa-warning);
+  border-radius: var(--killa-radius-md); padding: 16px; text-align: center;
+  margin-bottom: 16px;
+}
+.token-box .token-label { font-size: 12px; color: var(--killa-text-secondary); margin-bottom: 8px; }
+.token-box .token-timer { font-size: 12px; color: var(--killa-text-secondary); margin-top: 8px; }
+.token-status {
+  font-size: 14px; color: var(--killa-text-secondary);
+  margin: 8px 0; display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.token-status.received { color: var(--killa-secondary); font-weight: 600; }
+.spinner-sm {
+  width: 16px; height: 16px;
+  border: 2px solid var(--killa-primary-soft);
+  border-top-color: var(--killa-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.token-input {
+  font-family: 'Courier New', monospace; text-align: center;
+  font-size: 24px; letter-spacing: 8px; padding: 16px;
+  border-radius: var(--killa-radius-md); border: 1.5px solid var(--killa-border);
+  background: var(--killa-surface-alt); color: var(--killa-text);
+  width: 100%; transition: all 0.2s; cursor: default;
+}
+.token-input:focus { outline: none; }
+.token-input.received {
+  border-color: var(--killa-secondary);
+  background: var(--killa-secondary-soft);
+}
+
+.success-screen {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; text-align: center; padding-top: 40px;
+}
+.success-check {
+  width: 96px; height: 96px; border-radius: 50%;
+  background: var(--killa-secondary-soft); color: var(--killa-secondary);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 48px; margin-bottom: 24px;
+  animation: popIn 0.4s ease;
+}
+.success-check.error {
+  background: var(--killa-error-soft); color: var(--killa-error);
+}
+@keyframes popIn {
+  0% { transform: scale(0); opacity: 0; }
+  60% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+.success-title { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+.success-subtitle { font-size: 14px; color: var(--killa-text-secondary); margin-bottom: 24px; }
+.success-detail {
+  background: var(--killa-surface-alt); border-radius: var(--killa-radius-md);
+  padding: 16px; width: 100%; margin-bottom: 24px;
+}
+
+.polling-list { margin: 24px 0; display: flex; flex-direction: column; gap: 16px; }
+.polling-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 16px; border-radius: var(--killa-radius-md);
+  background: var(--killa-surface); border: 1px solid var(--killa-border);
+  transition: all 0.3s;
+}
+.polling-item.active { border-color: var(--killa-primary); background: var(--killa-primary-soft); }
+.polling-item.done { border-color: var(--killa-secondary); background: var(--killa-secondary-soft); }
+.polling-icon {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--killa-surface-alt); color: var(--killa-text-tertiary);
+  font-size: 14px; flex-shrink: 0;
+}
+.polling-item.active .polling-icon { background: var(--killa-primary); color: white; }
+.polling-item.done .polling-icon { background: var(--killa-secondary); color: white; }
+.polling-text { flex: 1; font-size: 14px; font-weight: 600; }
+.polling-item.active .polling-text { color: var(--killa-primary); }
+.polling-item.done .polling-text { color: var(--killa-secondary); }
+.polling-sub { font-size: 12px; color: var(--killa-text-secondary); font-weight: 400; margin-top: 2px; }
+
+/* ===== REGISTRO ===== */
+.registro-screen { padding-top: 16px; }
+.registro-step { display: none; }
+.registro-step.active { display: block; }
+.registro-title { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+.registro-desc { font-size: 14px; color: var(--killa-text-secondary); margin-bottom: 24px; }
+
+/* Captura de DNI / selfie */
+.capture-box {
+  width: 100%; aspect-ratio: 16/10;
+  border-radius: var(--killa-radius-md);
+  border: 2px dashed var(--killa-border);
+  background: var(--killa-surface-alt);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 8px; cursor: pointer;
+  transition: all 0.15s;
+  margin-bottom: 16px;
+}
+.capture-box:hover { border-color: var(--killa-primary); }
+.capture-box.captured { border-style: solid; border-color: var(--killa-secondary); background: var(--killa-secondary-soft); }
+.capture-icon { font-size: 36px; }
+.capture-text { font-size: 13px; font-weight: 600; color: var(--killa-text-secondary); text-align: center; padding: 0 16px; }
+.capture-box.captured .capture-text { color: var(--killa-secondary); }
+
+.selfie-circle {
+  width: 200px; height: 200px; border-radius: 50%;
+  border: 3px dashed var(--killa-border);
+  background: var(--killa-surface-alt);
+  margin: 0 auto 20px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 8px; cursor: pointer;
+  transition: all 0.15s;
+}
+.selfie-circle:hover { border-color: var(--killa-primary); }
+.selfie-circle.captured { border-style: solid; border-color: var(--killa-secondary); background: var(--killa-secondary-soft); }
+
+.selfie-instructions {
+  background: var(--killa-primary-soft);
+  border-radius: var(--killa-radius-md);
+  padding: 16px;
+  margin-bottom: 20px;
+}
+.selfie-instructions h4 {
+  font-size: 13px; font-weight: 700; margin-bottom: 8px;
+  color: var(--killa-primary);
+}
+.selfie-instructions ul {
+  list-style: none; padding: 0;
+}
+.selfie-instructions li {
+  font-size: 13px; color: var(--killa-text);
+  padding: 4px 0; padding-left: 20px; position: relative;
+}
+.selfie-instructions li::before {
+  content: '✓'; position: absolute; left: 0;
+  color: var(--killa-primary); font-weight: 700;
+}
+
+.pin-setup { display: flex; gap: 8px; justify-content: center; margin-bottom: 16px; }
+.pin-setup input {
+  width: 52px; height: 56px; text-align: center;
+  font-size: 22px; font-weight: 700;
+  border-radius: var(--killa-radius-sm);
+  border: 1.5px solid var(--killa-border);
+  background: var(--killa-surface); color: var(--killa-text);
+}
+.pin-setup input:focus {
+  outline: none; border-color: var(--killa-primary);
+  box-shadow: 0 0 0 3px var(--killa-primary-soft);
+}
+.pin-label { font-size: 13px; font-weight: 600; color: var(--killa-text-secondary); margin-bottom: 6px; }
+.pin-group { margin-bottom: 20px; }
+
+.dialog-overlay {
+  position: absolute; inset: 0; background: rgba(0,0,0,0.5);
+  display: none; align-items: center; justify-content: center;
+  z-index: 200; padding: 24px;
+}
+.dialog-overlay.active { display: flex; }
+.dialog {
+  background: var(--killa-surface); border-radius: var(--killa-radius-lg);
+  padding: 24px; width: 100%; max-width: 320px;
+  box-shadow: var(--killa-shadow-lg);
+}
+.dialog h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+.dialog p { font-size: 14px; color: var(--killa-text-secondary); margin-bottom: 20px; }
+.dialog-actions { display: flex; gap: 8px; }
+</style>
+</head>
+<body>
+
+<div class="controls">
+  <label>Pantalla:</label>
+  <select id="screen-select" onchange="cambiarPantalla(this.value)">
+    <option value="splash">Splash</option>
+    <option value="login" selected>Login</option>
+    <option value="registro">Registro</option>
+    <option value="home">Home</option>
+    <option value="historial">Historial</option>
+    <option value="perfil">Perfil</option>
+    <option value="transferir">Transferir</option>
+  </select>
+  <label>Tema:</label>
+  <button id="theme-toggle" onclick="toggleTema()">🌙 Dark</button>
+</div>
+
+<div class="phone">
+  <div class="status-bar"><span>9:41</span><span>📶 🔋</span></div>
+
+  <!-- SPLASH -->
+  <div class="screen splash-screen" id="screen-splash">
+    <div class="killa-logo">
+      <div class="killa-logo-mark">K</div>
+      <div class="killa-logo-text">Killa</div>
+      <div class="killa-logo-tagline">Banco Digital</div>
+    </div>
+    <div class="spinner"></div>
+    <div class="splash-footer">© 2026 Killa — Proyecto universitario</div>
+  </div>
+
+  <!-- LOGIN -->
+  <div class="screen login-screen active" id="screen-login">
+    <div class="login-header">
+      <div class="killa-logo">
+        <div class="killa-logo-mark small">K</div>
+        <div class="killa-logo-text" style="font-size:22px">Killa</div>
+        <div class="killa-logo-tagline">Banco Digital</div>
+      </div>
+      <h1>Bienvenido de vuelta</h1>
+      <p>Ingresa tus datos para continuar</p>
+    </div>
+    <div class="field">
+      <label>Correo electrónico</label>
+      <input type="email" placeholder="tu@correo.com" value="ana@killa.pe">
+    </div>
+    <div class="field">
+      <label>PIN de 6 dígitos</label>
+      <div class="pin-input">
+        <input type="password" maxlength="1" value="1">
+        <input type="password" maxlength="1" value="2">
+        <input type="password" maxlength="1" value="3">
+        <input type="password" maxlength="1" value="4">
+        <input type="password" maxlength="1" value="5">
+        <input type="password" maxlength="1" value="6">
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="cambiarPantalla('home')">Ingresar</button>
+    <div class="login-footer">¿No tienes cuenta? <a onclick="irARegistro()">Regístrate</a></div>
+  </div>
+
+  <!-- REGISTRO -->
+  <div class="screen registro-screen" id="screen-registro">
+    <div class="screen-header">
+      <div class="back-btn" onclick="volverDeRegistro()">←</div>
+      <h1>Crear cuenta</h1>
+    </div>
+    <div class="step-indicator">
+      <div class="step-dot active" id="reg-step-dot-1">1</div>
+      <div class="step-line" id="reg-step-line-1"></div>
+      <div class="step-dot" id="reg-step-dot-2">2</div>
+      <div class="step-line" id="reg-step-line-2"></div>
+      <div class="step-dot" id="reg-step-dot-3">3</div>
+      <div class="step-line" id="reg-step-line-3"></div>
+      <div class="step-dot" id="reg-step-dot-4">4</div>
+    </div>
+
+    <!-- Paso 1: Datos personales -->
+    <div class="registro-step active" id="reg-step-1">
+      <div class="registro-title">Datos personales</div>
+      <div class="registro-desc">Cuéntanos un poco sobre ti</div>
+      <div class="field">
+        <label>Nombres</label>
+        <input type="text" placeholder="Tus nombres" value="Ana Lucía">
+      </div>
+      <div class="field">
+        <label>Apellidos</label>
+        <input type="text" placeholder="Tus apellidos" value="García Mendoza">
+      </div>
+      <div class="field">
+        <label>Correo electrónico</label>
+        <input type="email" placeholder="tu@correo.com" value="ana@killa.pe">
+      </div>
+      <div class="field">
+        <label>Fecha de nacimiento</label>
+        <input type="date" value="1998-05-12">
+      </div>
+      <button class="btn btn-primary" onclick="irARegistroPaso(2)">Continuar</button>
+    </div>
+
+    <!-- Paso 2: DNI -->
+    <div class="registro-step" id="reg-step-2">
+      <div class="registro-title">Verifica tu DNI</div>
+      <div class="registro-desc">Ingresa tu número y sube una foto del documento</div>
+      <div class="field">
+        <label>Número de DNI</label>
+        <input type="text" placeholder="8 dígitos" maxlength="8" value="70458213">
+      </div>
+      <div class="capture-box" id="dni-capture" onclick="capturarDNI()">
+        <div class="capture-icon">📷</div>
+        <div class="capture-text">Toca para subir foto del DNI</div>
+      </div>
+      <button class="btn btn-primary" onclick="irARegistroPaso(3)">Continuar</button>
+      <button class="btn btn-ghost" style="margin-top:8px" onclick="irARegistroPaso(1)">Atrás</button>
+    </div>
+
+    <!-- Paso 3: Selfie -->
+    <div class="registro-step" id="reg-step-3">
+      <div class="registro-title">Verificación facial</div>
+      <div class="registro-desc">Tómate una selfie para confirmar tu identidad</div>
+      <div class="selfie-circle" id="selfie-capture" onclick="capturarSelfie()">
+        <div class="capture-icon">🤳</div>
+        <div class="capture-text">Toca para tomar selfie</div>
+      </div>
+      <div class="selfie-instructions">
+        <h4>Instrucciones</h4>
+        <ul>
+          <li>Mira directamente a la cámara</li>
+          <li>Buena iluminación</li>
+          <li>Sin gorras ni lentes</li>
+        </ul>
+      </div>
+      <button class="btn btn-primary" onclick="irARegistroPaso(4)">Continuar</button>
+      <button class="btn btn-ghost" style="margin-top:8px" onclick="irARegistroPaso(2)">Atrás</button>
+    </div>
+
+    <!-- Paso 4: Crear PIN -->
+    <div class="registro-step" id="reg-step-4">
+      <div class="registro-title">Crea tu PIN</div>
+      <div class="registro-desc">Será tu clave de acceso a la app</div>
+      <div class="pin-group">
+        <div class="pin-label">PIN de 6 dígitos</div>
+        <div class="pin-setup">
+          <input type="password" maxlength="1">
+          <input type="password" maxlength="1">
+          <input type="password" maxlength="1">
+          <input type="password" maxlength="1">
+          <input type="password" maxlength="1">
+          <input type="password" maxlength="1">
+        </div>
+      </div>
+      <div class="pin-group">
+        <div class="pin-label">Confirmar PIN</div>
+        <div class="pin-setup">
+          <input type="password" maxlength="1">
+          <input type="password" maxlength="1">
+          <input type="password" maxlength="1">
+          <input type="password" maxlength="1">
+          <input type="password" maxlength="1">
+          <input type="password" maxlength="1">
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="finalizarRegistro()">Crear cuenta</button>
+      <button class="btn btn-ghost" style="margin-top:8px" onclick="irARegistroPaso(3)">Atrás</button>
+    </div>
+
+    <!-- Paso 5: Éxito -->
+    <div class="registro-step" id="reg-step-5">
+      <div class="success-screen">
+        <div class="success-check">✓</div>
+        <div class="success-title">¡Bienvenido a Killa!</div>
+        <div class="success-subtitle">Tu cuenta fue creada correctamente</div>
+        <div class="success-detail">
+          <div class="summary-row"><span class="label">Titular</span><span class="value">Ana García</span></div>
+          <div class="summary-row"><span class="label">Correo</span><span class="value">ana@killa.pe</span></div>
+          <div class="summary-row"><span class="label">Cuenta</span><span class="value">KIL-••••-4821</span></div>
+        </div>
+        <button class="btn btn-primary" onclick="cambiarPantalla('home')">Ir al inicio</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOME -->
+  <div class="screen home-screen" id="screen-home">
+    <div class="home-header">
+      <div class="killa-logo">
+        <div class="killa-logo-mark tiny">K</div>
+        <div>
+          <div class="killa-logo-text">Killa</div>
+          <div class="killa-logo-tagline">Banco Digital</div>
+        </div>
+      </div>
+      <div class="avatar" onclick="cambiarPantalla('perfil')" style="cursor:pointer">AG</div>
+    </div>
+    <div class="balance-card">
+      <div class="label">Saldo disponible</div>
+      <div class="amount">S/ 2,450.00</div>
+      <div class="account">Cuenta •• 4821</div>
+    </div>
+    <div class="section-title">Accesos rápidos</div>
+    <div class="quick-actions">
+      <div class="action-card" onclick="irATransferir()">
+        <div class="action-icon">↗</div>
+        <div class="action-label">Transferir</div>
+      </div>
+      <div class="action-card" onclick="cambiarPantalla('historial')">
+        <div class="action-icon">☰</div>
+        <div class="action-label">Historial</div>
+      </div>
+      <div class="action-card" onclick="cambiarPantalla('perfil')">
+        <div class="action-icon">👤</div>
+        <div class="action-label">Perfil</div>
+      </div>
+    </div>
+    <div class="section-title">Últimos movimientos</div>
+    <div class="card" style="padding: 4px 16px;">
+      <div class="movement-item">
+        <div class="movement-icon in">↓</div>
+        <div class="movement-info"><div class="title">Transferencia recibida</div><div class="date">Hoy, 10:24</div></div>
+        <div class="movement-amount in">+ S/ 350.00</div>
+      </div>
+      <div class="movement-item">
+        <div class="movement-icon out">↑</div>
+        <div class="movement-info"><div class="title">Pago a DinoBit</div><div class="date">Ayer, 18:12</div></div>
+        <div class="movement-amount out">- S/ 120.00</div>
+      </div>
+      <div class="movement-item">
+        <div class="movement-icon in">↓</div>
+        <div class="movement-info"><div class="title">Depósito</div><div class="date">15 nov, 09:00</div></div>
+        <div class="movement-amount in">+ S/ 1,000.00</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HISTORIAL -->
+  <div class="screen historial-screen" id="screen-historial">
+    <div class="screen-header">
+      <div class="back-btn" onclick="cambiarPantalla('home')">←</div>
+      <h1>Historial</h1>
+    </div>
+    <div class="filter-chips">
+      <div class="chip active">Todos</div>
+      <div class="chip">Ingresos</div>
+      <div class="chip">Egresos</div>
+    </div>
+    <div class="date-group">
+      <div class="date-group-title">Hoy</div>
+      <div class="card">
+        <div class="movement-item">
+          <div class="movement-icon in">↓</div>
+          <div class="movement-info"><div class="title">Transferencia recibida</div><div class="date">10:24 · De Carlos M.</div></div>
+          <div class="movement-amount in">+ S/ 350.00</div>
+        </div>
+        <div class="movement-item">
+          <div class="movement-icon out">↑</div>
+          <div class="movement-info"><div class="title">Pago a DinoBit</div><div class="date">08:15 · Transferencia externa</div></div>
+          <div class="movement-amount out">- S/ 120.00</div>
+        </div>
+      </div>
+    </div>
+    <div class="date-group">
+      <div class="date-group-title">Ayer</div>
+      <div class="card">
+        <div class="movement-item">
+          <div class="movement-icon out">↑</div>
+          <div class="movement-info"><div class="title">Transferencia a María L.</div><div class="date">18:12 · Interna</div></div>
+          <div class="movement-amount out">- S/ 80.00</div>
+        </div>
+        <div class="movement-item">
+          <div class="movement-icon in">↓</div>
+          <div class="movement-info"><div class="title">Devolución</div><div class="date">12:40 · De DinoBit</div></div>
+          <div class="movement-amount in">+ S/ 45.00</div>
+        </div>
+      </div>
+    </div>
+    <div class="date-group">
+      <div class="date-group-title">15 de noviembre</div>
+      <div class="card">
+        <div class="movement-item">
+          <div class="movement-icon in">↓</div>
+          <div class="movement-info"><div class="title">Depósito</div><div class="date">09:00 · Ventanilla</div></div>
+          <div class="movement-amount in">+ S/ 1,000.00</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PERFIL -->
+  <div class="screen perfil-screen" id="screen-perfil">
+    <div class="screen-header">
+      <div class="back-btn" onclick="cambiarPantalla('home')">←</div>
+      <h1>Mi perfil</h1>
+    </div>
+    <div class="perfil-header">
+      <div class="perfil-avatar">AG</div>
+      <div class="perfil-name">Ana García</div>
+      <div class="perfil-email">ana@killa.pe</div>
+    </div>
+    <div class="card perfil-data">
+      <div class="perfil-row"><span class="label">DNI</span><span class="value">•••• 4821</span></div>
+      <div class="perfil-row"><span class="label">Correo</span><span class="value">ana@killa.pe</span></div>
+      <div class="perfil-row"><span class="label">Cuenta</span><span class="value">KIL-••••-4821</span></div>
+      <div class="perfil-row"><span class="label">Miembro desde</span><span class="value">Marzo 2025</span></div>
+    </div>
+    <button class="btn btn-danger" onclick="document.getElementById('dialog-logout').classList.add('active')">
+      Cerrar sesión
+    </button>
+  </div>
+
+  <!-- TRANSFERIR -->
+  <div class="screen transferir-screen" id="screen-transferir">
+    <div class="screen-header">
+      <div class="back-btn" onclick="volverDeTransferir()">←</div>
+      <h1 id="transferir-titulo">Transferir</h1>
+    </div>
+    <div class="step-indicator">
+      <div class="step-dot active" id="step-dot-1">1</div>
+      <div class="step-line" id="step-line-1"></div>
+      <div class="step-dot" id="step-dot-2">2</div>
+      <div class="step-line" id="step-line-2"></div>
+      <div class="step-dot" id="step-dot-3">3</div>
+      <div class="step-line" id="step-line-3"></div>
+      <div class="step-dot" id="step-dot-4">4</div>
+    </div>
+
+    <div class="transfer-step active" id="transfer-step-0">
+      <p style="font-size:14px;color:var(--killa-text-secondary);margin-bottom:20px;text-align:center">
+        ¿A dónde quieres transferir?
+      </p>
+      <div class="tipo-option" onclick="elegirTipo('interna')">
+        <div class="tipo-option-icon">K</div>
+        <div class="tipo-option-info">
+          <div class="tipo-option-title">Mismo banco</div>
+          <div class="tipo-option-desc">Transferir a otra cuenta Killa</div>
+        </div>
+        <div class="tipo-option-arrow">→</div>
+      </div>
+      <div class="tipo-option" onclick="elegirTipo('externa')">
+        <div class="tipo-option-icon">🌐</div>
+        <div class="tipo-option-info">
+          <div class="tipo-option-title">Otros bancos</div>
+          <div class="tipo-option-desc">Transferir a terceros vía Hub</div>
+        </div>
+        <div class="tipo-option-arrow">→</div>
+      </div>
+    </div>
+
+    <div class="transfer-step" id="transfer-step-0b">
+      <p style="font-size:14px;color:var(--killa-text-secondary);margin-bottom:20px;text-align:center">
+        Selecciona el banco destino
+      </p>
+      <div class="banco-option" onclick="elegirBanco('DinoBit')">
+        <div class="banco-icon dinobit">D</div>
+        <div class="banco-info">
+          <div class="banco-name">DinoBit</div>
+          <div class="banco-desc">Transferencia vía Hub Interbancario</div>
+        </div>
+        <div class="banco-arrow">→</div>
+      </div>
+      <div class="banco-option disabled">
+        <div class="banco-icon">B</div>
+        <div class="banco-info">
+          <div class="banco-name">BCP</div>
+          <div class="banco-desc">Integración pendiente</div>
+        </div>
+        <div class="banco-badge">Próximamente</div>
+      </div>
+      <div class="banco-option disabled">
+        <div class="banco-icon">I</div>
+        <div class="banco-info">
+          <div class="banco-name">Interbank</div>
+          <div class="banco-desc">Integración pendiente</div>
+        </div>
+        <div class="banco-badge">Próximamente</div>
+      </div>
+    </div>
+
+    <div class="transfer-step" id="transfer-step-1">
+      <div id="banner-externo" class="card" style="display:none;margin-bottom:16px;padding:12px 16px;background:var(--killa-primary-soft);border:none">
+        <div style="font-size:12px;color:var(--killa-primary);font-weight:600" id="banner-banco">Destino: DinoBit</div>
+        <div style="font-size:12px;color:var(--killa-text-secondary);margin-top:2px">Transferencia vía Hub Interbancario</div>
+      </div>
+      <div class="field">
+        <label id="label-cuenta">Cuenta destino</label>
+        <input type="text" id="input-cuenta" placeholder="Número de cuenta o alias" value="KIL-4821-9032">
+      </div>
+      <div class="field">
+        <label>Monto</label>
+        <input type="text" placeholder="0.00" value="S/ 150.00">
+      </div>
+      <div class="field">
+        <label>Concepto (opcional)</label>
+        <input type="text" placeholder="Ej. Pago de servicio" value="Pago de servicio">
+      </div>
+      <button class="btn btn-primary" onclick="irAPasoTransferir(2)">Continuar</button>
+    </div>
+
+    <div class="transfer-step" id="transfer-step-2">
+      <div class="summary-card">
+        <div class="summary-row"><span class="label">Destino</span><span class="value" id="summary-destino">KIL-4821-9032</span></div>
+        <div class="summary-row" id="summary-banco-row" style="display:none"><span class="label">Banco</span><span class="value" id="summary-banco">DinoBit</span></div>
+        <div class="summary-row"><span class="label">Concepto</span><span class="value">Pago de servicio</span></div>
+        <div class="summary-row total"><span class="label">Monto</span><span class="value">S/ 150.00</span></div>
+      </div>
+      <div class="token-box">
+        <div class="token-label">Token de seguridad</div>
+        <div class="token-status" id="token-status">
+          <div class="spinner-sm"></div>
+          <span>Enviando token a tu correo...</span>
+        </div>
+        <div class="token-timer" id="token-timer">Esperando token</div>
+      </div>
+      <div class="field">
+        <label>Token de 6 dígitos</label>
+        <input type="text" id="token-input" class="token-input" maxlength="6" placeholder="••••••" readonly>
+      </div>
+      <button class="btn btn-primary" id="btn-confirmar" disabled onclick="confirmarTransferencia()">Confirmar transferencia</button>
+      <button class="btn btn-ghost" style="margin-top:8px" onclick="irAPasoTransferir(1)">Cancelar</button>
+    </div>
+
+    <div class="transfer-step" id="transfer-step-3">
+      <div id="polling-view">
+        <h2 style="font-size:20px;font-weight:700;margin-bottom:8px;text-align:center">Procesando transferencia</h2>
+        <p style="font-size:14px;color:var(--killa-text-secondary);text-align:center;margin-bottom:24px">Esto puede tomar unos segundos</p>
+        <div class="polling-list">
+          <div class="polling-item" id="poll-item-1">
+            <div class="polling-icon">1</div>
+            <div>
+              <div class="polling-text">Enviando a DinoBit</div>
+              <div class="polling-sub">Conectando con el Hub Interbancario</div>
+            </div>
+          </div>
+          <div class="polling-item" id="poll-item-2">
+            <div class="polling-icon">2</div>
+            <div>
+              <div class="polling-text">Validando con el Hub</div>
+              <div class="polling-sub">Verificando autenticación OAuth2</div>
+            </div>
+          </div>
+          <div class="polling-item" id="poll-item-3">
+            <div class="polling-icon">3</div>
+            <div>
+              <div class="polling-text">Confirmando operación</div>
+              <div class="polling-sub">Registrando transferencia</div>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-secondary btn-sm" style="margin-top:16px" onclick="simularFallo()">Simular fallo (demo)</button>
+      </div>
+    </div>
+
+    <div class="transfer-step" id="transfer-step-4">
+      <div id="success-view">
+        <div class="success-screen">
+          <div class="success-check">✓</div>
+          <div class="success-title">Transferencia exitosa</div>
+          <div class="success-subtitle">Tu operación se completó correctamente</div>
+          <div class="success-detail" id="success-detail"></div>
+          <button class="btn btn-primary" onclick="cambiarPantalla('home')">Volver al inicio</button>
+        </div>
+      </div>
+      <div id="error-view" style="display:none">
+        <div class="success-screen">
+          <div class="success-check error">✕</div>
+          <div class="success-title">Transferencia fallida</div>
+          <div class="success-subtitle">El Hub rechazó la operación. Intenta nuevamente.</div>
+          <div class="success-detail">
+            <div class="summary-row"><span class="label">Motivo</span><span class="value" style="color:var(--killa-error)">Timeout del Hub</span></div>
+            <div class="summary-row"><span class="label">Código</span><span class="value">HUB_TIMEOUT</span></div>
+          </div>
+          <button class="btn btn-primary" onclick="irAPasoTransferir(1)">Reintentar</button>
+          <button class="btn btn-ghost" style="margin-top:8px" onclick="cambiarPantalla('home')">Volver al inicio</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Diálogo logout -->
+  <div class="dialog-overlay" id="dialog-logout">
+    <div class="dialog">
+      <h3>¿Cerrar sesión?</h3>
+      <p>Tendrás que volver a ingresar con tu correo y PIN.</p>
+      <div class="dialog-actions">
+        <button class="btn btn-secondary btn-sm" onclick="document.getElementById('dialog-logout').classList.remove('active')">Cancelar</button>
+        <button class="btn btn-danger btn-sm" onclick="cambiarPantalla('login');document.getElementById('dialog-logout').classList.remove('active')">Cerrar sesión</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let tipoTransferencia = null;
+let bancoSeleccionado = null;
+let tokenTimer = null;
+let esperaTimer = null;
+let pollingTimers = [];
+
+function cambiarPantalla(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  document.getElementById('screen-select').value = id;
+}
+
+function toggleTema() {
+  const html = document.documentElement;
+  const btn = document.getElementById('theme-toggle');
+  if (html.getAttribute('data-theme') === 'light') {
+    html.setAttribute('data-theme', 'dark');
+    btn.textContent = '☀️ Light';
+  } else {
+    html.setAttribute('data-theme', 'light');
+    btn.textContent = '🌙 Dark';
+  }
+}
+
+document.querySelectorAll('.chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    chip.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+  });
+});
+
+/* ===== REGISTRO ===== */
+function irARegistro() {
+  irARegistroPaso(1);
+  cambiarPantalla('registro');
+}
+
+function volverDeRegistro() {
+  cambiarPantalla('login');
+}
+
+function irARegistroPaso(paso) {
+  document.querySelectorAll('.registro-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('reg-step-' + paso).classList.add('active');
+  for (let i = 1; i <= 4; i++) {
+    const dot = document.getElementById('reg-step-dot-' + i);
+    dot.classList.remove('active', 'done');
+    if (i < paso) dot.classList.add('done');
+    else if (i === paso) dot.classList.add('active');
+  }
+  for (let i = 1; i <= 3; i++) {
+    const line = document.getElementById('reg-step-line-' + i);
+    line.classList.remove('done');
+    if (i < paso) line.classList.add('done');
+  }
+}
+
+function capturarDNI() {
+  const box = document.getElementById('dni-capture');
+  box.classList.add('captured');
+  box.querySelector('.capture-icon').textContent = '✓';
+  box.querySelector('.capture-text').textContent = 'DNI capturado correctamente';
+}
+
+function capturarSelfie() {
+  const box = document.getElementById('selfie-capture');
+  box.classList.add('captured');
+  box.querySelector('.capture-icon').textContent = '✓';
+  box.querySelector('.capture-text').textContent = 'Selfie verificada';
+}
+
+function finalizarRegistro() {
+  document.querySelectorAll('.registro-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('reg-step-5').classList.add('active');
+}
+
+/* ===== TRANSFERIR ===== */
+function irATransferir() {
+  tipoTransferencia = null;
+  bancoSeleccionado = null;
+  document.getElementById('transferir-titulo').textContent = 'Transferir';
+  irAPasoTransferir(0);
+  cambiarPantalla('transferir');
+}
+
+function volverDeTransferir() {
+  if (tipoTransferencia === null) {
+    cambiarPantalla('home');
+  } else {
+    irAPasoTransferir(0);
+  }
+}
+
+function elegirTipo(tipo) {
+  tipoTransferencia = tipo;
+  if (tipo === 'interna') {
+    irAPasoTransferir(1);
+  } else {
+    irAPasoTransferir('0b');
+  }
+}
+
+function elegirBanco(banco) {
+  bancoSeleccionado = banco;
+  document.getElementById('transferir-titulo').textContent = 'Transferir a ' + banco;
+  irAPasoTransferir(1);
+}
+
+function irAPasoTransferir(paso) {
+  document.querySelectorAll('#screen-transferir .transfer-step').forEach(s => s.classList.remove('active'));
+  const id = paso === '0b' ? 'transfer-step-0b' : 'transfer-step-' + paso;
+  document.getElementById(id).classList.add('active');
+
+  if (paso === 1) {
+    const esExterna = tipoTransferencia === 'externa';
+    document.getElementById('banner-externo').style.display = esExterna ? 'block' : 'none';
+    if (esExterna) {
+      document.getElementById('banner-banco').textContent = 'Destino: ' + bancoSeleccionado;
+      document.getElementById('label-cuenta').textContent = 'Cuenta destino en ' + bancoSeleccionado;
+      document.getElementById('input-cuenta').value = 'DINO-7788-2210';
+    } else {
+      document.getElementById('label-cuenta').textContent = 'Cuenta destino';
+      document.getElementById('input-cuenta').value = 'KIL-4821-9032';
+    }
+  }
+
+  if (paso === 2) {
+    const esExterna = tipoTransferencia === 'externa';
+    document.getElementById('summary-destino').textContent = esExterna ? 'DINO-7788-2210' : 'KIL-4821-9032';
+    document.getElementById('summary-banco-row').style.display = esExterna ? 'flex' : 'none';
+    if (esExterna) document.getElementById('summary-banco').textContent = bancoSeleccionado;
+    generarToken();
+  }
+
+  if (paso === 3) {
+    iniciarPolling();
+  }
+
+  actualizarStepIndicator(paso);
+}
+
+function confirmarTransferencia() {
+  if (tokenTimer) clearInterval(tokenTimer);
+  if (tipoTransferencia === 'externa') {
+    irAPasoTransferir(3);
+  } else {
+    const detail = document.getElementById('success-detail');
+    detail.innerHTML = `
+      <div class="summary-row"><span class="label">Monto</span><span class="value">S/ 150.00</span></div>
+      <div class="summary-row"><span class="label">Destino</span><span class="value">KIL-4821-9032</span></div>
+      <div class="summary-row"><span class="label">N° operación</span><span class="value">#KIL-2026-00123</span></div>
+      <div class="summary-row"><span class="label">Fecha</span><span class="value">20 nov 2026, 09:41</span></div>
+    `;
+    document.getElementById('success-view').style.display = 'block';
+    document.getElementById('error-view').style.display = 'none';
+    irAPasoTransferir(4);
+  }
+}
+
+function actualizarStepIndicator(paso) {
+  let visualPaso;
+  if (paso === 0) visualPaso = 1;
+  else if (paso === '0b') visualPaso = 2;
+  else visualPaso = paso + 1;
+
+  for (let i = 1; i <= 4; i++) {
+    const dot = document.getElementById('step-dot-' + i);
+    dot.classList.remove('active', 'done');
+    if (i < visualPaso) dot.classList.add('done');
+    else if (i === visualPaso) dot.classList.add('active');
+  }
+  for (let i = 1; i <= 3; i++) {
+    const line = document.getElementById('step-line-' + i);
+    line.classList.remove('done');
+    if (i < visualPaso) line.classList.add('done');
+  }
+}
+
+function generarToken() {
+  const status = document.getElementById('token-status');
+  const timerEl = document.getElementById('token-timer');
+  const input = document.getElementById('token-input');
+  const btn = document.getElementById('btn-confirmar');
+
+  status.className = 'token-status';
+  status.innerHTML = '<div class="spinner-sm"></div><span>Enviando token a tu correo...</span>';
+  timerEl.textContent = 'Esperando token';
+  input.value = '';
+  input.className = 'token-input';
+  btn.disabled = true;
+
+  if (tokenTimer) clearInterval(tokenTimer);
+  if (esperaTimer) clearTimeout(esperaTimer);
+
+  esperaTimer = setTimeout(() => {
+    const token = String(Math.floor(100000 + Math.random() * 900000));
+    input.value = token;
+    input.type = 'password';
+    input.className = 'token-input received';
+    status.className = 'token-status received';
+    status.innerHTML = '<span>✓ Token recibido</span>';
+    timerEl.textContent = 'Expira en 60s';
+    btn.disabled = false;
+
+    let segundos = 60;
+    tokenTimer = setInterval(() => {
+      segundos--;
+      timerEl.textContent = segundos > 0 ? `Expira en ${segundos}s` : 'Token expirado — reenvía';
+      if (segundos <= 0) { clearInterval(tokenTimer); btn.disabled = true; }
+    }, 1000);
+  }, 2000);
+}
+
+function limpiarPolling() {
+  pollingTimers.forEach(t => clearTimeout(t));
+  pollingTimers = [];
+}
+
+function resetPolling() {
+  limpiarPolling();
+  document.getElementById('polling-view').style.display = 'block';
+  for (let i = 1; i <= 3; i++) {
+    const item = document.getElementById('poll-item-' + i);
+    item.classList.remove('active', 'done');
+    item.querySelector('.polling-icon').textContent = i;
+  }
+}
+
+function iniciarPolling() {
+  resetPolling();
+
+  document.getElementById('poll-item-1').classList.add('active');
+  pollingTimers.push(setTimeout(() => {
+    const item = document.getElementById('poll-item-1');
+    item.classList.remove('active');
+    item.classList.add('done');
+    item.querySelector('.polling-icon').textContent = '✓';
+
+    document.getElementById('poll-item-2').classList.add('active');
+    pollingTimers.push(setTimeout(() => {
+      const item2 = document.getElementById('poll-item-2');
+      item2.classList.remove('active');
+      item2.classList.add('done');
+      item2.querySelector('.polling-icon').textContent = '✓';
+
+      document.getElementById('poll-item-3').classList.add('active');
+      pollingTimers.push(setTimeout(() => {
+        const item3 = document.getElementById('poll-item-3');
+        item3.classList.remove('active');
+        item3.classList.add('done');
+        item3.querySelector('.polling-icon').textContent = '✓';
+
+        pollingTimers.push(setTimeout(() => {
+          const detail = document.getElementById('success-detail');
+          detail.innerHTML = `
+            <div class="summary-row"><span class="label">Monto</span><span class="value">S/ 150.00</span></div>
+            <div class="summary-row"><span class="label">Destino</span><span class="value">DINO-7788-2210</span></div>
+            <div class="summary-row"><span class="label">Banco</span><span class="value">DinoBit</span></div>
+            <div class="summary-row"><span class="label">N° operación</span><span class="value">#HUB-2026-00456</span></div>
+            <div class="summary-row"><span class="label">Fecha</span><span class="value">20 nov 2026, 09:43</span></div>
+          `;
+          document.getElementById('success-view').style.display = 'block';
+          document.getElementById('error-view').style.display = 'none';
+          irAPasoTransferir(4);
+        }, 2000));
+      }, 2000));
+    }, 2000));
+  }, 2000));
+}
+
+function simularFallo() {
+  limpiarPolling();
+  document.getElementById('success-view').style.display = 'none';
+  document.getElementById('error-view').style.display = 'block';
+  irAPasoTransferir(4);
+}
+</script>
+</body>
+</html>

@@ -73,6 +73,7 @@ killa.api.baseUrl=http://10.0.2.2:8080/
 * Contrato de API
 * Convenciones de código y git
 * Decisiones de arquitectura (ADRs)
+* Mockups de diseño (docs/mockups/)
 
 ## Autor
 

@@ -4,6 +4,7 @@
 # ============================================================
 
 # ===== Android =====
+android/.kotlin/
 android/.gradle/
 android/build/
 android/app/build/

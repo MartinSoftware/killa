@@ -1,4 +1,3 @@
-```markdown
 # Convenciones del proyecto Killa
 
 ## Git
@@ -36,7 +35,7 @@ Ejemplos:
   - Constantes: `UPPER_SNAKE_CASE` (`MAX_INTENTOS_PIN`)
   - Composables: `PascalCase` (`LoginScreen`)
 - **Idioma**: identificadores en español para el dominio bancario (`cuenta`, `saldo`, `transferencia`), inglés para infraestructura técnica (`repository`, `viewModel`, `useCase`).
-- **Corrutinas**: nunca `GlobalScope`. Usar `viewModelScope` o `lifecycleScope`.
+- **Corrutinas**: nunca `GlobalScope`. Usar `viewModeslScope` o `lifecycleScope`.
 - **Estado**: `StateFlow` + `sealed interface` para estados de UI.
 
 ## Documentación
