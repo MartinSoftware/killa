@@ -40,17 +40,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.killa.app.domain.model.Movimiento
-import com.killa.app.domain.model.TipoMovimiento
-import com.killa.app.ui.theme.KillaMontoEgreso
-import com.killa.app.ui.theme.KillaMontoIngreso
 import com.killa.app.ui.theme.KillaPrimaryDark
 import com.killa.app.ui.theme.KillaPrimaryLight
 import com.killa.app.ui.theme.KillaRadius
 import com.killa.app.ui.theme.KillaSizes
 import com.killa.app.ui.theme.KillaSpacing
-import kotlin.math.absoluteValue
-
+import com.killa.app.ui.components.MovimientoItem
 @Composable
 fun HomeScreen(
     onIrATransferir: () -> Unit,
@@ -345,54 +340,3 @@ private fun QuickActionCard(
     }
 }
 
-@Composable
-private fun MovimientoItem(movimiento: Movimiento) {
-    val isIngreso = movimiento.tipo == TipoMovimiento.INGRESO
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = KillaSpacing.md),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Surface(
-            modifier = Modifier.size(KillaSizes.avatarSmall),
-            color = if (isIngreso) MaterialTheme.colorScheme.secondaryContainer
-            else MaterialTheme.colorScheme.errorContainer,
-            shape = KillaRadius.smShape
-        ) {
-            Box(contentAlignment = Alignment.Center) {
-                Icon(
-                    imageVector = if (isIngreso) Icons.Default.KeyboardArrowDown
-                    else Icons.Default.KeyboardArrowUp,
-                    contentDescription = if (isIngreso) "Ingreso" else "Egreso",
-                    tint = if (isIngreso) MaterialTheme.colorScheme.secondary
-                    else MaterialTheme.colorScheme.error,
-                    modifier = Modifier.size(KillaSizes.iconMedium)
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.size(KillaSpacing.md))
-
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = movimiento.titulo,
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Text(
-                text = movimiento.fecha,
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-
-        Text(
-            text = "${if (isIngreso) "+" else "-"} S/ %,.2f".format(movimiento.monto.absoluteValue),
-            style = MaterialTheme.typography.titleSmall,
-            color = if (isIngreso) KillaMontoIngreso else KillaMontoEgreso,
-            fontWeight = FontWeight.Bold
-        )
-    }
-}

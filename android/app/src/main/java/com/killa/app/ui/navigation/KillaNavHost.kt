@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.killa.app.ui.screens.historial.HistorialScreen
 import com.killa.app.ui.screens.login.LoginScreen
 import com.killa.app.ui.screens.splash.SplashScreen
 import com.killa.app.ui.screens.home.HomeScreen
@@ -76,11 +77,7 @@ fun KillaNavHost() {
         }
 
         composable(Rutas.HISTORIAL) {
-            PlaceholderScreen(
-                titulo = "Historial",
-                descripcion = "Lista de movimientos",
-                onContinuar = { navController.popBackStack() }
-            )
+            HistorialScreen(onVolver = { navController.popBackStack() })
         }
 
         composable(Rutas.PERFIL) {
