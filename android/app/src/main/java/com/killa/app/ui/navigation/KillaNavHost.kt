@@ -16,6 +16,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.killa.app.ui.screens.login.LoginScreen
+import com.killa.app.ui.screens.splash.SplashScreen
 
 @Composable
 fun KillaNavHost() {
@@ -26,11 +28,14 @@ fun KillaNavHost() {
         startDestination = Rutas.SPLASH
     ) {
         composable(Rutas.SPLASH) {
-            PlaceholderScreen(
-                titulo = "Splash",
-                descripcion = "Verificación de sesión",
-                onContinuar = {
+            SplashScreen(
+                onIrALogin = {
                     navController.navigate(Rutas.LOGIN) {
+                        popUpTo(Rutas.SPLASH) { inclusive = true }
+                    }
+                },
+                onIrAHome = {
+                    navController.navigate(Rutas.HOME) {
                         popUpTo(Rutas.SPLASH) { inclusive = true }
                     }
                 }
@@ -38,17 +43,17 @@ fun KillaNavHost() {
         }
 
         composable(Rutas.LOGIN) {
-            PlaceholderScreen(
-                titulo = "Login",
-                descripcion = "Correo + PIN",
-                onContinuar = {
+            LoginScreen(
+                onLoginSuccess = {
                     navController.navigate(Rutas.HOME) {
                         popUpTo(Rutas.LOGIN) { inclusive = true }
                     }
-                }
+                },
+                onIrARegistro = { navController.navigate(Rutas.REGISTRO) }
             )
         }
 
+        // Resto de rutas con placeholders (se reemplazan en próximos bloques)
         composable(Rutas.REGISTRO) {
             PlaceholderScreen(
                 titulo = "Registro",
@@ -95,10 +100,6 @@ fun KillaNavHost() {
     }
 }
 
-/**
- * Placeholder temporal para validar navegación antes de implementar cada pantalla.
- * Se reemplaza por el Screen real en el Bloque 4.4.
- */
 @Composable
 private fun PlaceholderScreen(
     titulo: String,
@@ -110,9 +111,7 @@ private fun PlaceholderScreen(
         color = MaterialTheme.colorScheme.background
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(24.dp),
+            modifier = Modifier.fillMaxSize().padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
