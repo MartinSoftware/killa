@@ -23,16 +23,29 @@ class HistorialViewModel @Inject constructor() : ViewModel() {
     val uiState: StateFlow<HistorialUiState> = _uiState.asStateFlow()
 
     init {
-        cargarMovimientos(FiltroHistorial.TODOS)
+        // Carga inicial: pantalla completa con spinner
+        cargarMovimientos(FiltroHistorial.TODOS, esCargaInicial = true)
     }
 
     fun onFiltroChange(filtro: FiltroHistorial) {
-        cargarMovimientos(filtro)
+        val actual = _uiState.value
+        // Si ya estamos en el mismo filtro o ya hay una carga en curso, ignorar
+        if (actual is HistorialUiState.Success && actual.filtroActual == filtro) return
+        if (actual is HistorialUiState.Success && actual.cargando) return
+
+        cargarMovimientos(filtro, esCargaInicial = false)
     }
 
-    private fun cargarMovimientos(filtro: FiltroHistorial) {
+    private fun cargarMovimientos(filtro: FiltroHistorial, esCargaInicial: Boolean) {
         viewModelScope.launch {
-            _uiState.value = HistorialUiState.Loading
+            if (esCargaInicial) {
+                _uiState.value = HistorialUiState.Loading
+            } else {
+                val actual = _uiState.value as? HistorialUiState.Success
+                _uiState.value = actual?.copy(cargando = true)
+                    ?: HistorialUiState.Loading
+            }
+
             delay(500) // simula llamada de red
 
             val movimientosFiltrados = when (filtro) {
@@ -45,9 +58,6 @@ class HistorialViewModel @Inject constructor() : ViewModel() {
                 }
             }
 
-            // Agrupar por fecha (en FakeData la fecha ya es un string legible:
-            // "Hoy, 10:24", "Ayer, 18:12", "15 nov, 09:00").
-            // Tomamos la parte antes de la coma como "grupo".
             val grupos = movimientosFiltrados
                 .groupBy { it.fecha.substringBefore(",").trim() }
                 .map { (fecha, movs) ->
@@ -56,7 +66,8 @@ class HistorialViewModel @Inject constructor() : ViewModel() {
 
             _uiState.value = HistorialUiState.Success(
                 filtroActual = filtro,
-                grupos = grupos
+                grupos = grupos,
+                cargando = false
             )
         }
     }

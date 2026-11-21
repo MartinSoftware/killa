@@ -93,7 +93,18 @@ private fun HistorialContent(
                 )
             )
 
-            if (estado.grupos.isEmpty()) {
+            // Barra fina de progreso solo cuando se está aplicando un filtro
+            if (estado.cargando) {
+                androidx.compose.material3.LinearProgressIndicator(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = KillaSpacing.lg)
+                        .height(2.dp),
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+
+            if (estado.grupos.isEmpty() && !estado.cargando) {
                 EstadoVacio(modifier = Modifier.weight(1f).fillMaxWidth())
             } else {
                 LazyColumn(
@@ -101,6 +112,7 @@ private fun HistorialContent(
                     contentPadding = PaddingValues(
                         start = KillaSpacing.lg,
                         end = KillaSpacing.lg,
+                        top = if (estado.cargando) KillaSpacing.sm else KillaSpacing.md,
                         bottom = KillaSpacing.lg
                     ),
                     verticalArrangement = Arrangement.spacedBy(KillaSpacing.lg)
