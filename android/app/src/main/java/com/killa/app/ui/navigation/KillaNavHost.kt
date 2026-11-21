@@ -18,7 +18,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.killa.app.ui.screens.login.LoginScreen
 import com.killa.app.ui.screens.splash.SplashScreen
-
+import com.killa.app.ui.screens.home.HomeScreen
+import com.killa.app.ui.screens.perfil.PerfilScreen
 @Composable
 fun KillaNavHost() {
     val navController = rememberNavController()
@@ -67,10 +68,10 @@ fun KillaNavHost() {
         }
 
         composable(Rutas.HOME) {
-            PlaceholderScreen(
-                titulo = "Home",
-                descripcion = "Saldo + accesos rápidos",
-                onContinuar = { navController.navigate(Rutas.HISTORIAL) }
+            HomeScreen(
+                onIrATransferir = { navController.navigate(Rutas.TRANSFERIR) },
+                onIrAHistorial = { navController.navigate(Rutas.HISTORIAL) },
+                onIrAPerfil = { navController.navigate(Rutas.PERFIL) }
             )
         }
 
@@ -83,10 +84,13 @@ fun KillaNavHost() {
         }
 
         composable(Rutas.PERFIL) {
-            PlaceholderScreen(
-                titulo = "Perfil",
-                descripcion = "Datos del usuario + logout",
-                onContinuar = { navController.popBackStack() }
+            PerfilScreen(
+                onVolver = { navController.popBackStack() },
+                onLogout = {
+                    navController.navigate(Rutas.LOGIN) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
             )
         }
 
